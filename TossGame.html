@@ -120,32 +120,33 @@
                                     font-family: Arial, sans-serif;
                                     display: flex;
                                     flex-direction: column;
-                                    justify-content: center;
+                                    justify-content: flex-start; /* 상단 정렬 */
                                     align-items: center;
                                     height: 100vh;
                                     margin: 0;
+                                    padding-top: 30px; /* 위쪽 여백 추가 */
                                 }
                                 h2 {
-                                    font-size: 28px; /* 제목 크기 증가 */
-                                    margin-bottom: 20px;
+                                    font-size: 36px; /* 제목 크기 증가 */
+                                    margin-bottom: 30px;
                                 }
                                 .link-container {
-                                    width: 80%;
+                                    width: 100%;
                                     text-align: center;
-                                    margin-bottom: 15px;
+                                    margin-bottom: 20px;
                                 }
                                 a {
                                     display: flex;
                                     align-items: center;
                                     justify-content: center;
-                                    font-size: 24px; /* 링크 글씨 크기 증가 */
-                                    padding: 16px;
+                                    font-size: 28px; /* 링크 글씨 크기 증가 */
+                                    padding: 20px;
                                     text-decoration: none;
-                                    border: 3px solid black;
-                                    border-radius: 10px;
+                                    border: 4px solid black;
+                                    border-radius: 15px;
                                     background-color: #f0f0f0;
                                     width: 80%;
-                                    max-width: 300px;
+                                    max-width: 350px;
                                 }
                                 a:hover {
                                     background-color: gray;
@@ -168,6 +169,7 @@
                 alert("팝업이 차단되었습니다. 설정에서 팝업을 허용해주세요.");
             }
         }
+
 
 
         function startGame() {
