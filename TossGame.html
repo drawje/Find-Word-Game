@@ -17,33 +17,40 @@
             margin: 0;
             overflow: hidden; /* 화면 넘침 방지 */
         }
-    
+
         /* 게임 컨테이너 */
         #game-container {
             display: grid;
-            gap: 5px;
+            gap: 2px; /* 정사각형 간격 최소화 */
             justify-content: center;
             align-items: center;
             margin-top: 20px;
-            width: min(90vw, 600px);  /* 최대 600px, 화면 너비의 90% */
-            height: min(80vh, 600px); /* 최대 600px, 화면 높이의 80% */
+            width: min(95vw, 600px);  /* 최대 600px, 화면 너비의 95% */
+            height: min(85vh, 600px); /* 최대 600px, 화면 높이의 85% */
         }
-    
-        /* 단어 스타일 (반응형 크기 조정) */
+
+        /* 단어 스타일 (정사각형 유지 + 글자 크기 최적화) */
         .word {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: calc(100% / 7 - 5px);  /* 7x7 기준으로 자동 조정 */
-            height: calc(100% / 7 - 5px);
-            font-size: min(5vw, 18px); /* 글자 크기 자동 조절 */
+            aspect-ratio: 1/1;  /* 정사각형 유지 */
+            width: calc(100% / 7 - 2px);  /* 7x7 기준으로 자동 크기 조정 */
+            min-width: 80px;  /* 최소 크기 확대 */
+            min-height: 80px;
+            font-size: min(4vw, 20px); /* 글자가 정사각형을 넘지 않도록 조정 */
             font-weight: bold;
             cursor: pointer;
             border-radius: 10px;
             border: 2px solid black;
             background-color: lightgray;
+            padding: 6px; /* 글자와 테두리 사이 여백 */
+            box-sizing: border-box;
+            text-align: center;
+            white-space: nowrap; /* 줄 바꿈 방지 */
+            overflow: hidden;
         }
-    
+
         /* 타이머 바 컨테이너 */
         #timer-container {
             width: 90%;
@@ -54,7 +61,7 @@
             margin-top: 10px;
             overflow: hidden;
         }
-    
+
         /* 타이머 바 */
         #timer-bar {
             height: 100%;
@@ -62,23 +69,27 @@
             width: 100%;
             transition: width linear;
         }
-    
+
         /* 모바일 화면 조정 */
         @media (max-width: 600px) {
             #game-container {
-                width: min(95vw, 400px);
-                height: min(75vh, 400px);
+                width: min(98vw, 400px);
+                height: min(85vh, 400px);
             }
-    
+
             .word {
-                font-size: min(4vw, 14px);
+                min-width: 65px;
+                min-height: 65px;
+                font-size: min(5vw, 18px); /* 모바일에서도 글자가 잘리지 않도록 조정 */
                 border-radius: 5px;
             }
-    
+
             #timer-container {
                 height: 15px;
             }
         }
+
+
     </style>
        
 </head>
