@@ -43,7 +43,7 @@
             text-align: center;
             white-space: nowrap;
             overflow: hidden;
-            font-size: calc(3vmin);
+            font-size: min(max(3vmin, 12px), 30px); /* 자동 크기 조정 */
         }
 
         #timer-container {
@@ -64,8 +64,8 @@
         }
 
         button {
-            font-size: 18px;
-            padding: 10px 20px;
+            font-size: 20px;
+            padding: 12px 24px;
             margin: 10px;
             border: none;
             border-radius: 5px;
@@ -92,7 +92,7 @@
         let level = 1;
         let timer;
         let isGameOver = false;
-        
+
         const timeLimits = [15, 12, 7, 4, 2];
         const levelWords = [
             ["CAR", "CAT"],
@@ -102,22 +102,13 @@
             ["BLUE", "BIUE"]
         ];
 
-        // 🚀 각 경우에 대한 URL과 제목 설정
-        const successUrls = [
-            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 24학번 전용", url: "https://forms.gle/6vdWCSMXMJNEzQ4e8" },
-            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 25학번 전용", url: "https://forms.gle/owuM877sHxeGLJHs7" }
-        ];
-        const timeoutUrls = [
-            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 24학번 전용", url: "https://forms.gle/6vdWCSMXMJNEzQ4e8" },
-            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 25학번 전용", url: "https://forms.gle/owuM877sHxeGLJHs7" }
-        ];
-        const wrongClickUrls = [
-            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 24학번 전용", url: "https://forms.gle/6vdWCSMXMJNEzQ4e8" },
-            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 25학번 전용", url: "https://forms.gle/owuM877sHxeGLJHs7" }
+        const urls = [
+            { title: "부앙부앙~ 24학번 SALC 신청하러 가볼까?", url: "https://forms.gle/6vdWCSMXMJNEzQ4e8" },
+            { title: "부앙부앙~ 25학번 SALC 신청하러 가볼까?", url: "https://forms.gle/owuM877sHxeGLJHs7" }
         ];
 
-        function openUrlSelection(title, urls) {
-            const popup = window.open("", "_blank", "width=400,height=300");
+        function openUrlSelection(title) {
+            const popup = window.open("", "_blank", "width=500,height=400");
             if (popup) {
                 popup.document.write(`
                     <html>
@@ -134,24 +125,22 @@
                                     height: 100vh;
                                     margin: 0;
                                 }
-                                h2 { margin-bottom: 20px; }
+                                h2 {
+                                    font-size: 24px;
+                                    margin-bottom: 20px;
+                                }
                                 .link-container {
                                     width: 80%;
-                                    text-align: left;
+                                    text-align: center;
                                     margin-bottom: 15px;
-                                }
-                                .link-title {
-                                    font-size: 16px;
-                                    font-weight: bold;
-                                    margin-bottom: 5px;
                                 }
                                 a {
                                     display: block;
-                                    font-size: 14px;
-                                    padding: 10px;
+                                    font-size: 18px;
+                                    padding: 12px;
                                     text-decoration: none;
-                                    border: 1px solid black;
-                                    border-radius: 5px;
+                                    border: 2px solid black;
+                                    border-radius: 8px;
                                     background-color: #f0f0f0;
                                 }
                                 a:hover {
@@ -162,14 +151,11 @@
                         </head>
                         <body>
                             <h2>${title}</h2>
-                            <div class="link-container">
-                                <div class="link-title">${urls[0].title}</div>
-                                <a href="${urls[0].url}" target="_blank">${urls[0].url}</a>
-                            </div>
-                            <div class="link-container">
-                                <div class="link-title">${urls[1].title}</div>
-                                <a href="${urls[1].url}" target="_blank">${urls[1].url}</a>
-                            </div>
+                            ${urls.map(link => `
+                                <div class="link-container">
+                                    <a href="${link.url}" target="_blank">${link.title}</a>
+                                </div>
+                            `).join("")}
                         </body>
                     </html>
                 `);
@@ -189,12 +175,7 @@
             if (isGameOver) return;
             isGameOver = true;
             clearInterval(timer);
-
-            if (reason === "timeout") {
-                openUrlSelection("시간 초과! Game Over!", timeoutUrls);
-            } else if (reason === "wrongClick") {
-                openUrlSelection("잘못된 단어를 선택했습니다!<br> Game Over!", wrongClickUrls);
-            }
+            openUrlSelection(reason === "timeout" ? "시간 초과! Game Over!" : "잘못된 단어 선택! Game Over!");
         }
 
         function startTimer(seconds) {
@@ -208,28 +189,15 @@
                 timerBar.style.width = "0%";
             }, 10);
 
-            let timeLeft = seconds;
             timer = setInterval(() => {
-                if (isGameOver) {
-                    clearInterval(timer);
-                    return;
-                }
-
-                timeLeft--;
-                if (timeLeft <= 0) {
-                    handleGameOver("timeout");
-                }
+                if (isGameOver) return clearInterval(timer);
+                if (--seconds <= 0) handleGameOver("timeout");
             }, 1000);
         }
 
         function nextLevel() {
             if (isGameOver) return;
-
-            if (level > 5) {
-                openUrlSelection("축하합니다!<br>모든 레벨을 완료했습니다!", successUrls);
-                clearInterval(timer);
-                return;
-            }
+            if (level > 5) return openUrlSelection("축하합니다!<br>모든 레벨을 완료했습니다!");
 
             const gridSize = level + 1;
             const gameContainer = document.getElementById("game-container");
@@ -239,8 +207,7 @@
             startTimer(timeLimits[level - 1]);
 
             const wordCount = gridSize * gridSize;
-            const chosenWord = levelWords[level - 1][0];
-            const wrongWord = levelWords[level - 1][1];
+            const [chosenWord, wrongWord] = levelWords[level - 1];
 
             const wordsArray = new Array(wordCount).fill(chosenWord);
             const differentIndex = Math.floor(Math.random() * wordCount);
@@ -250,10 +217,10 @@
                 const wordElement = document.createElement("div");
                 wordElement.textContent = word;
                 wordElement.classList.add("word");
+                wordElement.style.fontSize = `${Math.min(Math.max(90 / gridSize, 12), 30)}px`;
 
                 wordElement.onclick = () => {
                     if (isGameOver) return;
-
                     if (index === differentIndex) {
                         clearInterval(timer);
                         level++;
