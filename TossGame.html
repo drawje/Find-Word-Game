@@ -42,7 +42,7 @@
             font-weight: bold;
             cursor: pointer;
             border-radius: 15px;
-            border: 2px solid black;
+            border: 0px solid black;
             background-color: lightgray;
             text-align: center;
             white-space: nowrap;
@@ -63,7 +63,7 @@
         /* 타이머 바 */
         #timer-bar {
             height: 100%;
-            background-color: yellowgreen;
+            background-color: grey;
             width: 100%;
             transition: width linear;
         }
@@ -75,13 +75,13 @@
             margin: 10px;
             border: none;
             border-radius: 5px;
-            background-color: royalblue;
+            background-color: black;
             color: white;
             cursor: pointer;
         }
 
         button:hover {
-            background-color: darkblue;
+            background-color: gray;
         }
     </style>
 </head>
@@ -151,7 +151,7 @@
             gameContainer.style.height = `${containerSize}px`;  
 
             const squareSize = containerSize / gridSize;
-            const fontSize = Math.min(Math.max(squareSize * 0.4, 12), 30); // 🔥 폰트 크기 자동 조정
+            const fontSize = Math.min(Math.max(squareSize * 0.1, 12), 30); // 🔥 폰트 크기 자동 조정
 
             startTimer(timeLimits[level - 1]);
 
