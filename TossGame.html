@@ -102,82 +102,11 @@
             ["BLUE", "BIUE"]
         ];
 
-        const urls = [
-            { title: "부앙부앙~ <br>재학생들 SALC 신청하러 가볼까?", url: "https://forms.gle/6vdWCSMXMJNEzQ4e8" },
-            { title: "부앙부앙~ <br>신입생들 SALC 신청하러 가볼까?", url: "https://forms.gle/owuM877sHxeGLJHs7" }
-        ];
-
         function openUrlSelection(title) {
-            const newWindow = window.open();
-            if (newWindow) {
-                newWindow.document.write(`
-                    <html>
-                        <head>
-                            <title>${title}</title>
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <style>
-                                body {
-                                    text-align: center;
-                                    font-family: Arial, sans-serif;
-                                    display: flex;
-                                    flex-direction: column;
-                                    justify-content: flex-start;
-                                    align-items: center;
-                                    height: 100vh;
-                                    margin: 0;
-                                    padding-top: 30px;
-                                }
-                                h2 {
-                                    font-size: 36px;
-                                    margin-bottom: 30px;
-                                }
-                                .link-container {
-                                    width: 100%;
-                                    display: flex;
-                                    justify-content: center;
-                                    margin-bottom: 20px;
-                                }
-                                a {
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    font-size: 28px;
-                                    padding: 20px;
-                                    text-decoration: none;
-                                    border: 4px solid black;
-                                    border-radius: 15px;
-                                    background-color: #f0f0f0;
-                                    width: 80%;
-                                    max-width: 450px;
-                                    color: black;
-                                }
-                                a:link, a:visited, a:hover, a:active {
-                                    color: black;
-                                    text-decoration: none;
-                                }
-                                .popup-image {
-                                    width: 80%;
-                                    max-width: 450px;
-                                    margin-top: 20px;
-                                }
-                            </style>
-                        </head>
-                        <body>
-                            <h2>${title}</h2>
-                            ${urls.map(link => `
-                                <div class="link-container">
-                                    <a href="${link.url}" target="_blank">${link.title}</a>
-                                </div>
-                            `).join("")}
-                            <img src="images/SALC_img.jpg" class="popup-image">
-                        </body>
-                    </html>
-                `);
-                newWindow.document.close();
-            } else {
-                alert("새 창을 열 수 없습니다. 팝업 차단 설정을 확인해주세요.");
-            }
+            // 현재 창에서 URL 선택 화면으로 이동
+            window.location.href = "url_selection.html?title=" + encodeURIComponent(title);
         }
+
 
         function startGame() {
             level = 1;
