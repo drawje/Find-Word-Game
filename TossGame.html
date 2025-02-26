@@ -132,7 +132,8 @@
                                 }
                                 .link-container {
                                     width: 100%;
-                                    text-align: center;
+                                    display: flex;
+                                    justify-content: center; /* 버튼 중앙 정렬 */
                                     margin-bottom: 20px;
                                 }
                                 a {
@@ -147,10 +148,11 @@
                                     background-color: #f0f0f0;
                                     width: 80%;
                                     max-width: 350px;
+                                    color: black;
                                 }
-                                a:hover {
-                                    background-color: gray;
-                                    color: white;
+                                a:link, a:visited, a:hover, a:active {
+                                    color: black; /* 모든 상태에서 검은색 유지 */
+                                    text-decoration: none; /* 밑줄 제거 */
                                 }
                             </style>
                         </head>
@@ -169,6 +171,7 @@
                 alert("팝업이 차단되었습니다. 설정에서 팝업을 허용해주세요.");
             }
         }
+
 
 
 
