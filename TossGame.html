@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find the Different Word</title>
     <style>
-        /* 전체 화면 중앙 정렬 */
         html, body {
             text-align: center;
             font-family: Arial, sans-serif;
@@ -16,40 +15,37 @@
             height: 100vh;
             width: 100vw;
             margin: 0;
-            overflow: hidden; /* 🔥 스크롤 완전 차단 */
-            touch-action: none; /* 🔥 모바일에서 터치 스크롤 방지 */
+            overflow: hidden;
+            touch-action: none;
         }
 
-        /* 게임 컨테이너 (정사각형 유지) */
         #game-container {
             display: grid;
             justify-content: center;
             align-items: center;
-            width: 90vmin;  /* 🔥 화면 크기에 맞게 자동 조절 */
-            height: 90vmin; /* 🔥 정사각형 유지 */
+            width: 90vmin;
+            height: 90vmin;
             grid-template-columns: repeat(var(--grid-size), 1fr);
             grid-template-rows: repeat(var(--grid-size), 1fr);
             border: 4px solid white;
             box-sizing: border-box;
         }
 
-        /* 단어 스타일 */
         .word {
             display: flex;
             align-items: center;
             justify-content: center;
-            aspect-ratio: 1/1; /* 🔥 정사각형 유지 */
+            aspect-ratio: 1/1;
             font-weight: bold;
             cursor: pointer;
             border-radius: 15px;
-            border: 0px solid white;
             background-color: lightgray;
             text-align: center;
             white-space: nowrap;
             overflow: hidden;
+            font-size: calc(3vmin);
         }
 
-        /* 타이머 바 컨테이너 */
         #timer-container {
             width: 90%;
             max-width: 300px;
@@ -60,7 +56,6 @@
             overflow: hidden;
         }
 
-        /* 타이머 바 */
         #timer-bar {
             height: 100%;
             background-color: grey;
@@ -68,7 +63,6 @@
             transition: width linear;
         }
 
-        /* 버튼 스타일 */
         button {
             font-size: 18px;
             padding: 10px 20px;
@@ -97,20 +91,110 @@
     <script>
         let level = 1;
         let timer;
-        let isGameOver = false; // 게임 오버 여부
-        const timeLimits = [20, 15, 9, 7, 5];
+        let isGameOver = false;
+        
+        const timeLimits = [15, 12, 7, 4, 2];
         const levelWords = [
             ["CAR", "CAT"],
             ["SUN", "SUM"],
+            ["FINE", "FIND"],
             ["SALC", "SAIC"],
-            ["APPLE", "APPLL"],
             ["BLUE", "BIUE"]
         ];
 
+        // 🚀 각 경우에 대한 URL과 제목 설정
+        const successUrls = [
+            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 24학번 전용", url: "https://forms.gle/6vdWCSMXMJNEzQ4e8" },
+            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 25학번 전용", url: "https://forms.gle/owuM877sHxeGLJHs7" }
+        ];
+        const timeoutUrls = [
+            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 24학번 전용", url: "https://forms.gle/6vdWCSMXMJNEzQ4e8" },
+            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 25학번 전용", url: "https://forms.gle/owuM877sHxeGLJHs7" }
+        ];
+        const wrongClickUrls = [
+            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 24학번 전용", url: "https://forms.gle/6vdWCSMXMJNEzQ4e8" },
+            { title: "부앙부앙! SALC 신청하러 가볼까~!<br> 25학번 전용", url: "https://forms.gle/owuM877sHxeGLJHs7" }
+        ];
+
+        function openUrlSelection(title, urls) {
+            const popup = window.open("", "_blank", "width=400,height=300");
+            if (popup) {
+                popup.document.write(`
+                    <html>
+                        <head>
+                            <title>${title}</title>
+                            <style>
+                                body {
+                                    text-align: center;
+                                    font-family: Arial, sans-serif;
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: center;
+                                    align-items: center;
+                                    height: 100vh;
+                                    margin: 0;
+                                }
+                                h2 { margin-bottom: 20px; }
+                                .link-container {
+                                    width: 80%;
+                                    text-align: left;
+                                    margin-bottom: 15px;
+                                }
+                                .link-title {
+                                    font-size: 16px;
+                                    font-weight: bold;
+                                    margin-bottom: 5px;
+                                }
+                                a {
+                                    display: block;
+                                    font-size: 14px;
+                                    padding: 10px;
+                                    text-decoration: none;
+                                    border: 1px solid black;
+                                    border-radius: 5px;
+                                    background-color: #f0f0f0;
+                                }
+                                a:hover {
+                                    background-color: gray;
+                                    color: white;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <h2>${title}</h2>
+                            <div class="link-container">
+                                <div class="link-title">${urls[0].title}</div>
+                                <a href="${urls[0].url}" target="_blank">${urls[0].url}</a>
+                            </div>
+                            <div class="link-container">
+                                <div class="link-title">${urls[1].title}</div>
+                                <a href="${urls[1].url}" target="_blank">${urls[1].url}</a>
+                            </div>
+                        </body>
+                    </html>
+                `);
+                popup.document.close();
+            } else {
+                alert("팝업이 차단되었습니다. 설정에서 팝업을 허용해주세요.");
+            }
+        }
+
         function startGame() {
             level = 1;
-            isGameOver = false; // 게임 시작 시 초기화
+            isGameOver = false;
             nextLevel();
+        }
+
+        function handleGameOver(reason) {
+            if (isGameOver) return;
+            isGameOver = true;
+            clearInterval(timer);
+
+            if (reason === "timeout") {
+                openUrlSelection("시간 초과! Game Over!", timeoutUrls);
+            } else if (reason === "wrongClick") {
+                openUrlSelection("잘못된 단어를 선택했습니다!<br> Game Over!", wrongClickUrls);
+            }
         }
 
         function startTimer(seconds) {
@@ -118,7 +202,7 @@
             const timerBar = document.getElementById("timer-bar");
             timerBar.style.transition = "none";
             timerBar.style.width = "100%";
-            
+
             setTimeout(() => {
                 timerBar.style.transition = `width ${seconds}s linear`;
                 timerBar.style.width = "0%";
@@ -126,31 +210,32 @@
 
             let timeLeft = seconds;
             timer = setInterval(() => {
-                if (isGameOver) return; // 게임 오버 상태라면 실행 중지
+                if (isGameOver) {
+                    clearInterval(timer);
+                    return;
+                }
 
                 timeLeft--;
                 if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    isGameOver = true;
-                    alert("Game Over!");
+                    handleGameOver("timeout");
                 }
             }, 1000);
         }
 
         function nextLevel() {
-            if (isGameOver) return; // 게임 오버 상태라면 실행 중지
+            if (isGameOver) return;
 
             if (level > 5) {
-                alert("Congratulations! You completed all levels!");
+                openUrlSelection("축하합니다!<br>모든 레벨을 완료했습니다!", successUrls);
                 clearInterval(timer);
                 return;
             }
-            
+
             const gridSize = level + 1;
             const gameContainer = document.getElementById("game-container");
             gameContainer.innerHTML = "";
             gameContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
-            
+
             startTimer(timeLimits[level - 1]);
 
             const wordCount = gridSize * gridSize;
@@ -165,24 +250,21 @@
                 const wordElement = document.createElement("div");
                 wordElement.textContent = word;
                 wordElement.classList.add("word");
-                
+
                 wordElement.onclick = () => {
-                    if (isGameOver) return; // 게임 오버 상태라면 클릭 이벤트 무효화
+                    if (isGameOver) return;
 
                     if (index === differentIndex) {
                         clearInterval(timer);
                         level++;
                         nextLevel();
                     } else {
-                        clearInterval(timer);
-                        isGameOver = true;
-                        alert("Game Over!");
+                        handleGameOver("wrongClick");
                     }
                 };
                 gameContainer.appendChild(wordElement);
             });
         }
-
     </script>
 </body>
 </html>
