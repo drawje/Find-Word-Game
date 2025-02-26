@@ -127,15 +127,15 @@
             gameContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
             gameContainer.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
 
-            // 🌟 모바일 & PC 대응을 위한 컨테이너 크기 조정
             const isMobile = window.innerWidth < 600;
             const containerSize = isMobile 
-                ? Math.min(window.innerWidth * 0.98, window.innerHeight * 0.8) // 모바일 최적화
-                : Math.min(window.innerWidth * 0.95, window.innerHeight * 0.85, 600); // PC에서 최대 600px
+                ? Math.min(window.innerWidth * 0.98, window.innerHeight * 0.8) 
+                : Math.min(window.innerWidth * 0.95, window.innerHeight * 0.85, 600);
+
+            gameContainer.style.width = `${containerSize}px`;
+            gameContainer.style.height = `${containerSize}px`;  // 🔥 가로 & 세로 동일하게 설정 (정사각형 유지)
 
             const squareSize = containerSize / gridSize;
-
-            // 🌟 폰트 크기 조정 (최소 12px, 최대 30px)
             const fontSize = Math.min(Math.max(squareSize * 0.4, 12), 30);
 
             startTimer(timeLimits[level - 1]);
@@ -152,9 +152,9 @@
                 const wordElement = document.createElement("div");
                 wordElement.textContent = word;
                 wordElement.classList.add("word");
+                wordElement.style.fontSize = `${fontSize}px`;
                 wordElement.style.width = `${squareSize}px`;
-                wordElement.style.height = `${squareSize}px`;
-                wordElement.style.fontSize = `${fontSize}px`; // 가독성을 위한 폰트 크기 적용
+                wordElement.style.height = `${squareSize}px`; // 🔥 세로 크기도 동일하게 설정
 
                 wordElement.onclick = () => {
                     if (index === differentIndex) {
@@ -168,6 +168,7 @@
                 gameContainer.appendChild(wordElement);
             });
         }
+
     </script>
 </body>
 </html>
