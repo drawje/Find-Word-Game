@@ -18,16 +18,15 @@
             overflow: hidden; /* 화면 넘침 방지 */
         }
     
-        /* 게임 컨테이너: 반응형 그리드 */
+        /* 게임 컨테이너 */
         #game-container {
             display: grid;
             gap: 5px;
             justify-content: center;
             align-items: center;
             margin-top: 20px;
-            max-width: 90vw; /* 화면 너비 넘지 않도록 */
-            max-height: 80vh; /* 화면 높이 넘지 않도록 */
-            overflow: hidden;
+            width: min(90vw, 600px);  /* 최대 600px, 화면 너비의 90% */
+            height: min(80vh, 600px); /* 최대 600px, 화면 높이의 80% */
         }
     
         /* 단어 스타일 (반응형 크기 조정) */
@@ -35,9 +34,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: min(20vw, 80px);  /* 최대 80px, 최소 20% 화면 */
-            height: min(20vw, 80px);
-            font-size: min(6vw, 22px); /* 글자 크기 자동 조절 */
+            width: calc(100% / 7 - 5px);  /* 7x7 기준으로 자동 조정 */
+            height: calc(100% / 7 - 5px);
+            font-size: min(5vw, 18px); /* 글자 크기 자동 조절 */
             font-weight: bold;
             cursor: pointer;
             border-radius: 10px;
@@ -64,19 +63,24 @@
             transition: width linear;
         }
     
-        /* 모바일 화면에서 전체 요소 크기 조정 */
+        /* 모바일 화면 조정 */
         @media (max-width: 600px) {
+            #game-container {
+                width: min(95vw, 400px);
+                height: min(75vh, 400px);
+            }
+    
             .word {
-                width: min(25vw, 60px);
-                height: min(25vw, 60px);
-                font-size: min(5vw, 18px);
+                font-size: min(4vw, 14px);
+                border-radius: 5px;
             }
     
             #timer-container {
                 height: 15px;
             }
         }
-    </style>    
+    </style>
+       
 </head>
 <body>
     <h1>SALC 다른 단어를 찾아라!!</h1>
