@@ -97,17 +97,19 @@
     <script>
         let level = 1;
         let timer;
-        const timeLimits = [15, 12, 7, 4, 2]; // 레벨별 제한 시간
+        let isGameOver = false; // 게임 오버 여부
+        const timeLimits = [20, 15, 9, 7, 5];
         const levelWords = [
             ["CAR", "CAT"],
             ["SUN", "SUM"],
-            ["FINE", "FIND"],
             ["SALC", "SAIC"],
+            ["APPLE", "APPLL"],
             ["BLUE", "BIUE"]
         ];
 
         function startGame() {
             level = 1;
+            isGameOver = false; // 게임 시작 시 초기화
             nextLevel();
         }
 
@@ -116,6 +118,7 @@
             const timerBar = document.getElementById("timer-bar");
             timerBar.style.transition = "none";
             timerBar.style.width = "100%";
+            
             setTimeout(() => {
                 timerBar.style.transition = `width ${seconds}s linear`;
                 timerBar.style.width = "0%";
@@ -123,35 +126,31 @@
 
             let timeLeft = seconds;
             timer = setInterval(() => {
+                if (isGameOver) return; // 게임 오버 상태라면 실행 중지
+
                 timeLeft--;
                 if (timeLeft <= 0) {
                     clearInterval(timer);
+                    isGameOver = true;
                     alert("Game Over!");
                 }
             }, 1000);
         }
 
         function nextLevel() {
+            if (isGameOver) return; // 게임 오버 상태라면 실행 중지
+
             if (level > 5) {
-                alert("축하합니다! 모든 레벨을 클리어했습니다!");
+                alert("Congratulations! You completed all levels!");
                 clearInterval(timer);
                 return;
             }
-
+            
             const gridSize = level + 1;
             const gameContainer = document.getElementById("game-container");
             gameContainer.innerHTML = "";
             gameContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
-            gameContainer.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
-
-            // 🔥 모바일 화면 크기에 맞게 자동 조정
-            const containerSize = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9);
-            gameContainer.style.width = `${containerSize}px`;
-            gameContainer.style.height = `${containerSize}px`;  
-
-            const squareSize = containerSize / gridSize;
-            const fontSize = Math.min(Math.max(squareSize * 0.3, 10), 30); // 🔥 폰트 크기 자동 조정
-
+            
             startTimer(timeLimits[level - 1]);
 
             const wordCount = gridSize * gridSize;
@@ -166,23 +165,24 @@
                 const wordElement = document.createElement("div");
                 wordElement.textContent = word;
                 wordElement.classList.add("word");
-                wordElement.style.fontSize = `${fontSize}px`;
-                wordElement.style.width = `${squareSize}px`;
-                wordElement.style.height = `${squareSize}px`; // 🔥 정사각형 크기 정확하게 설정
-
+                
                 wordElement.onclick = () => {
+                    if (isGameOver) return; // 게임 오버 상태라면 클릭 이벤트 무효화
+
                     if (index === differentIndex) {
                         clearInterval(timer);
                         level++;
                         nextLevel();
                     } else {
                         clearInterval(timer);
+                        isGameOver = true;
                         alert("Game Over!");
                     }
                 };
                 gameContainer.appendChild(wordElement);
             });
         }
+
     </script>
 </body>
 </html>
