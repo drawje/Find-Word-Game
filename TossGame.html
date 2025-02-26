@@ -29,7 +29,7 @@
             height: 90vmin; /* 🔥 정사각형 유지 */
             grid-template-columns: repeat(var(--grid-size), 1fr);
             grid-template-rows: repeat(var(--grid-size), 1fr);
-            border: 4px solid black;
+            border: 4px solid white;
             box-sizing: border-box;
         }
 
@@ -42,7 +42,7 @@
             font-weight: bold;
             cursor: pointer;
             border-radius: 15px;
-            border: 0px solid black;
+            border: 0px solid white;
             background-color: lightgray;
             text-align: center;
             white-space: nowrap;
@@ -151,7 +151,7 @@
             gameContainer.style.height = `${containerSize}px`;  
 
             const squareSize = containerSize / gridSize;
-            const fontSize = Math.min(Math.max(squareSize * 0.1, 12), 30); // 🔥 폰트 크기 자동 조정
+            const fontSize = Math.min(Math.max(squareSize * 0.4, 10), 35); // 🔥 폰트 크기 자동 조정
 
             startTimer(timeLimits[level - 1]);
 
