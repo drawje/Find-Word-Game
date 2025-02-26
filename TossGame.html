@@ -43,7 +43,7 @@
             text-align: center;
             white-space: nowrap;
             overflow: hidden;
-            font-size: min(max(3vmin, 12px), 30px); /* 자동 크기 조정 */
+            font-size: min(max(3vmin, 12px), 30px);
         }
 
         #timer-container {
@@ -108,39 +108,40 @@
         ];
 
         function openUrlSelection(title) {
-            const popup = window.open("", "_blank", "width=500,height=400");
-            if (popup) {
-                popup.document.write(`
+            const newWindow = window.open();
+            if (newWindow) {
+                newWindow.document.write(`
                     <html>
                         <head>
                             <title>${title}</title>
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
                             <style>
                                 body {
                                     text-align: center;
                                     font-family: Arial, sans-serif;
                                     display: flex;
                                     flex-direction: column;
-                                    justify-content: flex-start; /* 상단 정렬 */
+                                    justify-content: flex-start;
                                     align-items: center;
                                     height: 100vh;
                                     margin: 0;
-                                    padding-top: 30px; /* 위쪽 여백 추가 */
+                                    padding-top: 30px;
                                 }
                                 h2 {
-                                    font-size: 36px; /* 제목 크기 증가 */
+                                    font-size: 36px;
                                     margin-bottom: 30px;
                                 }
                                 .link-container {
                                     width: 100%;
                                     display: flex;
-                                    justify-content: center; /* 버튼 중앙 정렬 */
+                                    justify-content: center;
                                     margin-bottom: 20px;
                                 }
                                 a {
                                     display: flex;
                                     align-items: center;
                                     justify-content: center;
-                                    font-size: 28px; /* 링크 글씨 크기 증가 */
+                                    font-size: 28px;
                                     padding: 20px;
                                     text-decoration: none;
                                     border: 4px solid black;
@@ -151,13 +152,13 @@
                                     color: black;
                                 }
                                 a:link, a:visited, a:hover, a:active {
-                                    color: black; /* 모든 상태에서 검은색 유지 */
-                                    text-decoration: none; /* 밑줄 제거 */
+                                    color: black;
+                                    text-decoration: none;
                                 }
                                 .popup-image {
-                                    width: 140%; /* 버튼과 동일한 너비 */
-                                    max-width: 750px; /* 버튼 최대 너비와 일치 */
-                                    margin-top: 20px; /* 버튼과의 간격 */
+                                    width: 80%;
+                                    max-width: 450px;
+                                    margin-top: 20px;
                                 }
                             </style>
                         </head>
@@ -172,14 +173,11 @@
                         </body>
                     </html>
                 `);
-                popup.document.close();
+                newWindow.document.close();
             } else {
-                alert("팝업이 차단되었습니다. 설정에서 팝업을 허용해주세요.");
+                alert("새 창을 열 수 없습니다. 팝업 차단 설정을 확인해주세요.");
             }
         }
-
-
-
 
         function startGame() {
             level = 1;
