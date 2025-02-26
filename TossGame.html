@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>다른 단어 찾기 게임</title>
+    <title>Find the Different Word</title>
     <style>
         /* 전체 화면 중앙 정렬 */
-        body {
+        html, body {
             text-align: center;
             font-family: Arial, sans-serif;
             display: flex;
@@ -14,20 +14,22 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            width: 100vw;
             margin: 0;
-            overflow: hidden;
+            overflow: hidden; /* 🔥 스크롤 완전 차단 */
+            touch-action: none; /* 🔥 모바일에서 터치 스크롤 방지 */
         }
 
-        /* 게임 컨테이너 (정사각형) */
+        /* 게임 컨테이너 (정사각형 유지) */
         #game-container {
             display: grid;
             justify-content: center;
             align-items: center;
-            margin-top: 20px;
-            width: min(95vw, 600px);
-            height: min(85vh, 600px);
-            border: 0px solid black;
-            padding: 0;
+            width: 90vmin;  /* 🔥 화면 크기에 맞게 자동 조절 */
+            height: 90vmin; /* 🔥 정사각형 유지 */
+            grid-template-columns: repeat(var(--grid-size), 1fr);
+            grid-template-rows: repeat(var(--grid-size), 1fr);
+            border: 4px solid black;
             box-sizing: border-box;
         }
 
@@ -36,12 +38,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            aspect-ratio: 1/1; /* 🔥 정사각형 유지 */
             font-weight: bold;
             cursor: pointer;
             border-radius: 15px;
             border: 2px solid black;
             background-color: lightgray;
-            box-sizing: border-box;
             text-align: center;
             white-space: nowrap;
             overflow: hidden;
@@ -65,12 +67,28 @@
             width: 100%;
             transition: width linear;
         }
+
+        /* 버튼 스타일 */
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: royalblue;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkblue;
+        }
     </style>
 </head>
 <body>
     <h1>SALC 다른 단어를 찾아라!!</h1>
     <p>제한시간 내에 다른 단어를 찾아주세요!!</p>
-    <button onclick="startGame()">게임 시작</button>
+    <button onclick="startGame()">Start Game</button>
     <div id="timer-container">
         <div id="timer-bar"></div>
     </div>
@@ -84,7 +102,7 @@
             ["CAR", "CAT"],
             ["SUN", "SUM"],
             ["SALC", "SAIC"],
-            ["APPLE", "APPLL"],
+            ["FINE", "FIND"],
             ["BLUE", "BIUE"]
         ];
 
@@ -127,16 +145,13 @@
             gameContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
             gameContainer.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
 
-            const isMobile = window.innerWidth < 600;
-            const containerSize = isMobile 
-                ? Math.min(window.innerWidth * 0.98, window.innerHeight * 0.8) 
-                : Math.min(window.innerWidth * 0.95, window.innerHeight * 0.85, 600);
-
+            // 🔥 모바일 화면 크기에 맞게 자동 조정
+            const containerSize = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9);
             gameContainer.style.width = `${containerSize}px`;
-            gameContainer.style.height = `${containerSize}px`;  // 🔥 가로 & 세로 동일하게 설정 (정사각형 유지)
+            gameContainer.style.height = `${containerSize}px`;  
 
             const squareSize = containerSize / gridSize;
-            const fontSize = Math.min(Math.max(squareSize * 0.4, 12), 30);
+            const fontSize = Math.min(Math.max(squareSize * 0.4, 12), 30); // 🔥 폰트 크기 자동 조정
 
             startTimer(timeLimits[level - 1]);
 
@@ -154,7 +169,7 @@
                 wordElement.classList.add("word");
                 wordElement.style.fontSize = `${fontSize}px`;
                 wordElement.style.width = `${squareSize}px`;
-                wordElement.style.height = `${squareSize}px`; // 🔥 세로 크기도 동일하게 설정
+                wordElement.style.height = `${squareSize}px`; // 🔥 정사각형 크기 정확하게 설정
 
                 wordElement.onclick = () => {
                     if (index === differentIndex) {
@@ -168,7 +183,6 @@
                 gameContainer.appendChild(wordElement);
             });
         }
-
     </script>
 </body>
 </html>
