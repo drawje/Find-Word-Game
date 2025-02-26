@@ -97,12 +97,12 @@
     <script>
         let level = 1;
         let timer;
-        const timeLimits = [15, 12, 7, 5, 3]; // 레벨별 제한 시간
+        const timeLimits = [15, 12, 7, 4, 2]; // 레벨별 제한 시간
         const levelWords = [
             ["CAR", "CAT"],
             ["SUN", "SUM"],
-            ["SALC", "SAIC"],
             ["FINE", "FIND"],
+            ["SALC", "SAIC"],
             ["BLUE", "BIUE"]
         ];
 
@@ -126,8 +126,7 @@
                 timeLeft--;
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    alert("시간 초과! 다시 도전하세요.");
-                    startGame();
+                    alert("Game Over!");
                 }
             }, 1000);
         }
@@ -177,7 +176,8 @@
                         level++;
                         nextLevel();
                     } else {
-                        alert("틀렸습니다! 다시 선택하세요.");
+                        clearInterval(timer);
+                        alert("Game Over!");
                     }
                 };
                 gameContainer.appendChild(wordElement);
