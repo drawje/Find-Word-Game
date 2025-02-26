@@ -21,7 +21,7 @@
         /* 게임 컨테이너 */
         #game-container {
             display: grid;
-            gap: 2px; /* 정사각형 간격 최소화 */
+            gap: 0; /* 단어 간격 완전히 제거 */
             justify-content: center;
             align-items: center;
             margin-top: 20px;
@@ -35,21 +35,22 @@
             align-items: center;
             justify-content: center;
             aspect-ratio: 1/1;  /* 정사각형 유지 */
-            width: calc(100% / 7 - 2px);  /* 7x7 기준으로 자동 크기 조정 */
-            min-width: 80px;  /* 최소 크기 확대 */
-            min-height: 80px;
-            font-size: min(4vw, 20px); /* 글자가 정사각형을 넘지 않도록 조정 */
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 10px;
-            border: 2px solid black;
+            border: 2px solid black; /* 경계선 */
             background-color: lightgray;
-            padding: 6px; /* 글자와 테두리 사이 여백 */
             box-sizing: border-box;
             text-align: center;
             white-space: nowrap; /* 줄 바꿈 방지 */
             overflow: hidden;
+            font-weight: bold;
+            cursor: pointer;
         }
+
+        /* 레벨별 크기 자동 조정 */
+        .level-3 .word { width: 33%; font-size: 5vw; }
+        .level-4 .word { width: 25%; font-size: 4.5vw; }
+        .level-5 .word { width: 20%; font-size: 4vw; }
+        .level-6 .word { width: 16%; font-size: 3.5vw; }
+        .level-7 .word { width: 14%; font-size: 3vw; }
 
         /* 타이머 바 컨테이너 */
         #timer-container {
@@ -77,12 +78,11 @@
                 height: min(85vh, 400px);
             }
 
-            .word {
-                min-width: 65px;
-                min-height: 65px;
-                font-size: min(5vw, 18px); /* 모바일에서도 글자가 잘리지 않도록 조정 */
-                border-radius: 5px;
-            }
+            .level-3 .word { width: 33%; font-size: 6vw; }
+            .level-4 .word { width: 25%; font-size: 5.5vw; }
+            .level-5 .word { width: 20%; font-size: 5vw; }
+            .level-6 .word { width: 16%; font-size: 4.5vw; }
+            .level-7 .word { width: 14%; font-size: 4vw; }
 
             #timer-container {
                 height: 15px;
@@ -91,7 +91,6 @@
 
 
     </style>
-       
 </head>
 <body>
     <h1>SALC 다른 단어를 찾아라!!</h1>
@@ -104,14 +103,14 @@
     <script>
         let level = 1;
         let timer;
-        const timeLimits = [20, 15, 10, 8, 6]; // Time limits per level in seconds
+        const timeLimits = [20, 15, 9, 7, 5];
         const levelWords = [
-            ["APPLE", "APPLL"],
-            ["DOG", "FOG"],
             ["CAR", "CAT"],
-            ["BLUE", "BIUE"],
-            ["SUN", "SUM"]
-        ]; // Different words for each level
+            ["SUN", "SUM"],
+            ["SALC", "SAIC"],
+            ["APPLE", "APPLL"],
+            ["BLUE", "BIUE"]
+        ];
 
         function startGame() {
             level = 1;
@@ -146,12 +145,15 @@
                 return;
             }
             
-            document.getElementById("game-container").innerHTML = "";
-            const gridSize = level + 2; // 3x3, 4x4, ..., 7x7
-            document.getElementById("game-container").style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
-            document.getElementById("game-container").style.display = "grid";
+            const gridSize = level + 1;
+            const gameContainer = document.getElementById("game-container");
+            gameContainer.innerHTML = "";
+            gameContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
             
-            startTimer(timeLimits[level - 1]); // Set timer for the level
+            const squareSize = Math.max(80 - level * 10, 40); 
+            const fontSize = Math.max(24 - level * 3, 12);
+            
+            startTimer(timeLimits[level - 1]);
             
             const wordCount = gridSize * gridSize;
             const chosenWord = levelWords[level - 1][0];
@@ -165,6 +167,9 @@
                 const wordElement = document.createElement("div");
                 wordElement.textContent = word;
                 wordElement.classList.add("word");
+                wordElement.style.width = `${squareSize}px`;
+                wordElement.style.height = `${squareSize}px`;
+                wordElement.style.fontSize = `${fontSize}px`;
                 wordElement.onclick = () => {
                     if (index === differentIndex) {
                         clearInterval(timer);
@@ -174,7 +179,7 @@
                         alert("Try again!");
                     }
                 };
-                document.getElementById("game-container").appendChild(wordElement);
+                gameContainer.appendChild(wordElement);
             });
         }
     </script>
