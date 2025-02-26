@@ -103,8 +103,8 @@
         ];
 
         const urls = [
-            { title: "부앙부앙~ 24학번 SALC 신청하러 가볼까?", url: "https://forms.gle/6vdWCSMXMJNEzQ4e8" },
-            { title: "부앙부앙~ 25학번 SALC 신청하러 가볼까?", url: "https://forms.gle/owuM877sHxeGLJHs7" }
+            { title: "부앙부앙~ <br>재학생들 SALC 신청하러 가볼까?", url: "https://forms.gle/6vdWCSMXMJNEzQ4e8" },
+            { title: "부앙부앙~ <br>신입생들 SALC 신청하러 가볼까?", url: "https://forms.gle/owuM877sHxeGLJHs7" }
         ];
 
         function openUrlSelection(title) {
@@ -147,12 +147,17 @@
                                     border-radius: 15px;
                                     background-color: #f0f0f0;
                                     width: 80%;
-                                    max-width: 350px;
+                                    max-width: 450px;
                                     color: black;
                                 }
                                 a:link, a:visited, a:hover, a:active {
                                     color: black; /* 모든 상태에서 검은색 유지 */
                                     text-decoration: none; /* 밑줄 제거 */
+                                }
+                                .popup-image {
+                                    width: 90%; /* 버튼과 동일한 너비 */
+                                    max-width: 450px; /* 버튼 최대 너비와 일치 */
+                                    margin-top: 20px; /* 버튼과의 간격 */
                                 }
                             </style>
                         </head>
@@ -163,6 +168,7 @@
                                     <a href="${link.url}" target="_blank">${link.title}</a>
                                 </div>
                             `).join("")}
+                            <img src="SALC_img.jpg" class="popup-image">
                         </body>
                     </html>
                 `);
